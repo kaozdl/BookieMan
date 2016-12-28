@@ -1,11 +1,15 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import render
 from django.http import HttpResponse
 
-from BookieMan.applications.books.models import Book, Collection
+from applications.books.models import Book, Collection
+
+def index(request):
+    list_books(request)
 
 def mark_as_taken(request):
-    # tkn = Averiguar como se mandan y reciben parámetros a traves del template
-    if tkn.taken == False:
+    tkn = Book.objcects.get(id=book__id)
+    if (tkn.taken == False):
         tkn.taker = request.taker
         tkn.taken = True
         tkn.save()
@@ -14,10 +18,13 @@ def mark_as_taken(request):
         return HttpResponse("Este libro se encuentra prestado")
 
 def untake(request):
-    # untk = Averiguar como se consiguen los objetos
-    untk.taker = ""
-    untk.save()
-    return HttpResponse("Devuelto Correctamente")
+    untk = Book.objcects.get(id=book__id)
+    if (untk.taken == True):
+        untk.taker = ""
+        untk.save()
+        return HttpResponse("Devuelto Correctamente")
+    else:
+        return HttpResponse("Este libro no se encuentra prestado")
 
 def list_books(request):
     books = Book.objects.all()
@@ -41,7 +48,7 @@ def list_collection(request):
 
 def addToCollection(request):
     # bookToAdd = Averiguar como se consiguen los objetos
-    if bookToAdd.collection != None
+    if bookToAdd.collection != None:
         return HttpResponse ("Este libro se encuentra en: "+bookToAdd.collection)
     elif (Collection.objects.filter(id=collection_id).count() > 0):
         bookToAdd.collection = collection_id
