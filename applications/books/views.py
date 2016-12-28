@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
-from BookieMan.books import Book, Collection
+from BookieMan.applications.books.models import Book, Collection
 
 def mark_as_taken(request):
     # tkn = Averiguar como se mandan y reciben parámetros a traves del template
@@ -27,7 +27,7 @@ def list_books(request):
 def list_book(request):
     book = Book.objects.get(id=book__id)
     context = {'book': book}
-    return render(request,bookshow,context)
+    return render(request,book,context)
 
 def list_collections(request):
     collections = Collection.objects.all()
