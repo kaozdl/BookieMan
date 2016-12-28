@@ -33,7 +33,14 @@ def list_books(request):
 
 def list_book(request):
     book = Book.objects.get(id=book__id)
-    context = {'book': book}
+    name = book.name
+    author = book.author
+    if (book.taken == True):
+        state = 'Prestado'
+    else:
+        state = 'En el estante'
+    collection = book.collection.name
+    context = {'name': name, 'author' : author, 'state': state, 'collection' : collection}
     return render(request,book,context)
 
 def list_collections(request):
@@ -43,7 +50,8 @@ def list_collections(request):
 
 def list_collection(request):
     collection = Book.objects.filter(collection=collection)
-    context = {'collection': collection}
+    name = Collection.objects.get(collection=collection).name
+    context = {'collection': collection, 'name': name}
     return render(request,collection,context)
 
 def addToCollection(request):

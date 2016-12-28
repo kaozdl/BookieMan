@@ -1,0 +1,7 @@
+{% load staticfiles %}
+<h2>{{name}}</h2>
+<list>
+{% for book in collection %}
+    <ul>{{book}}</ul><br>
+{% endfor %}
+</list>
