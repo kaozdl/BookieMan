@@ -31,27 +31,31 @@ def list_books(request):
     context = {'books':books}
     return render(request,books,context)
 
-def list_book(request):
-    book = Book.objects.get(id=book__id)
+def list_book(request,bookid):
+    # import ipdb; ipdb.set_trace()
+    book = Book.objects.get(id=bookid)
     name = book.name
     author = book.author
     if (book.taken == True):
         state = 'Prestado'
     else:
         state = 'En el estante'
-    collection = book.collection.name
+    if (book.collection != None):
+        collection = book.collection.name
+    else:
+        collection = ""
     context = {'name': name, 'author' : author, 'state': state, 'collection' : collection}
-    return render(request,book,context)
+    return render(request,'book.html',context)
 
 def list_collections(request):
     collections = Collection.objects.all()
-    context = {'collections': collections}
+    context = {'collections.html': collections}
     return render(request,collections,context)
 
-def list_collection(request):
+def list_collection(request,collection):
     collection = Book.objects.filter(collection=collection)
     name = Collection.objects.get(collection=collection).name
-    context = {'collection': collection, 'name': name}
+    context = {'collection.html': collection, 'name': name}
     return render(request,collection,context)
 
 def addToCollection(request):

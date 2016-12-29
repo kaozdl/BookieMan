@@ -1,4 +1,8 @@
 {% include "index.html" %}
 {% load staticfiles %}
 <h1>Tus libros</h1>
-{{posts}}
+<list>
+{% for book in books %}
+    <ul>{{book.name}} {{book.state}}</ul><br>
+{% endfor %}
+</list>
