@@ -55,7 +55,7 @@ ROOT_URLCONF = 'BookieMan.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['applications/books/templates/'],
+        'DIRS': ['applications/books/templates/','templates/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

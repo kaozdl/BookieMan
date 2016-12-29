@@ -7,6 +7,9 @@ class Collection(models.Model):
     # How many books are in the collection
     books = models.IntegerField()
 
+    def count_books(self):
+        return Book.objects.filter(collection=self).count()
+
 class Book(models.Model):
     # Core
     name = models.CharField(max_length=60)

@@ -1,8 +1,16 @@
-{% include "index.html" %}
 {% load staticfiles %}
 <h1>Tus libros</h1>
 <list>
 {% for book in books %}
-    <ul>{{book.name}} {{book.state}}</ul><br>
+    <ul>{{book.name}} {{book.state}}</ul>
+        <a href=>Prestar libro</a>
+         <a href="{%url 'bookuntk' book.id%}">Devolver libro</a>
+         <a href="{%url 'bookdlt' book.id%}">Borrar libro</a> <br>
 {% endfor %}
+</list>
+
+<list>
+    <a>Editar libro</a>
+    <a href="{%url 'books' %}">Volver a la lista</a>
+    <a href="{% url 'index'%}">Volver al menú</a>
 </list>

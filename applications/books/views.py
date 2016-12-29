@@ -5,10 +5,11 @@ from django.http import HttpResponse
 from applications.books.models import Book, Collection
 
 def index(request):
-    list_books(request)
+    context = {}
+    return render(request,'index.html',context)
 
-def mark_as_taken(request):
-    tkn = Book.objcects.get(id=book__id)
+def mark_as_taken(request,bookid):
+    tkn = Book.objcects.get(id=bookid)
     if (tkn.taken == False):
         tkn.taker = request.taker
         tkn.taken = True
@@ -17,8 +18,8 @@ def mark_as_taken(request):
     else:
         return HttpResponse("Este libro se encuentra prestado")
 
-def untake(request):
-    untk = Book.objcects.get(id=book__id)
+def untake(request,bookid):
+    untk = Book.objects.get(id=bookid)
     if (untk.taken == True):
         untk.taker = ""
         untk.save()
@@ -29,7 +30,7 @@ def untake(request):
 def list_books(request):
     books = Book.objects.all()
     context = {'books':books}
-    return render(request,books,context)
+    return render(request,'books.html',context)
 
 def list_book(request,bookid):
     # import ipdb; ipdb.set_trace()
@@ -47,16 +48,22 @@ def list_book(request,bookid):
     context = {'name': name, 'author' : author, 'state': state, 'collection' : collection}
     return render(request,'book.html',context)
 
+def delete_book(request,bookid):
+    book = Book.objects.get(id=bookid)
+    book.delete()
+    return HttpResponse("Borrado exitosamente")
+
 def list_collections(request):
     collections = Collection.objects.all()
-    context = {'collections.html': collections}
-    return render(request,collections,context)
+    context = {'collections': collections}
+    return render(request,'collections.html',context)
 
 def list_collection(request,collection):
     collection = Book.objects.filter(collection=collection)
     name = Collection.objects.get(collection=collection).name
-    context = {'collection.html': collection, 'name': name}
-    return render(request,collection,context)
+    count = collection.count()
+    context = {'collection': collection, 'name': name, 'count': count}
+    return render(request,'collection.html',context)
 
 def addToCollection(request):
     # bookToAdd = Averiguar como se consiguen los objetos
