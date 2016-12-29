@@ -9,5 +9,7 @@ urlpatterns = [
     url(r'^collection/([0-9]+)$', views.list_collection, name='collection'),
     url(r'^collection/$', views.list_collections, name='collections'),
     url(r'^deletebook/([0-9]+)$', views.delete_book, name='bookdlt'),
-    url(r'^untakebook/([0-9]+)$', views.untake, name='bookuntk')
+    url(r'^untakebook/([0-9]+)$', views.untake, name='bookuntk'),
+    url(r'^booknew/$', views.new_book, name='newbook'),
+    url(r'^collectionnew/$', views.new_collection, name='newcollection')
 ]

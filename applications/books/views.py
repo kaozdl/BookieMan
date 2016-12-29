@@ -3,10 +3,41 @@ from django.shortcuts import render
 from django.http import HttpResponse
 
 from applications.books.models import Book, Collection
+from applications.books.form import BookForm, CollectionForm
 
 def index(request):
     context = {}
     return render(request,'index.html',context)
+
+def new_book(request):
+    if request.method == 'POST':
+        newbook = BookForm(request.POST)
+        if newbook.is_valid():
+            newbook.save()
+            book = BookForm()
+            context = {'form': book}
+            return render(request,'bookCreate.html',context)
+        else:
+            return HttpResponse('Datos incorrectos')
+    else:
+        book = BookForm()
+        context = {'form': book}
+        return render(request,'bookCreate.html',context)
+
+def new_collection(request):
+    if request.method == 'POST':
+        newcollection = CollectionForm(request.POST)
+        if newcollection.is_valid():
+            newcollection.save()
+            collection = CollectionForm()
+            context = {'form': collection}
+            return render(request,'collectionCreate.html',context)
+        else:
+            return HttpResponse('Datos incorrectos')
+    else:
+        book = CollectionForm()
+        context = {'form': book}
+        return render(request,'bookCreate.html',context)
 
 def mark_as_taken(request,bookid):
     tkn = Book.objcects.get(id=bookid)

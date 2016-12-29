@@ -7,6 +7,9 @@ class Collection(models.Model):
     # How many books are in the collection
     books = models.IntegerField()
 
+    def __unicode__(self):
+        return self.name
+
     def count_books(self):
         return Book.objects.filter(collection=self).count()
 
@@ -18,4 +21,4 @@ class Book(models.Model):
     last_take = models.DateField(null=True)
     # Misc
     author = models.CharField(max_length=60)
-    collection = models.ForeignKey(Collection,null=True)
+    collection = models.ForeignKey(Collection,null=True,blank=True)

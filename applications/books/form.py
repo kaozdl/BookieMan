@@ -1,13 +1,13 @@
 from django.forms import ModelForm
 
-from BookieMan.applications.books.models import Book, Collection
+from applications.books.models import Book, Collection
 
 class BookForm(ModelForm):
     class Meta:
         model = Book
-        fields = ['name','taker','collection']
+        fields = ['name','author','collection']
 
-class Collection(ModelForm):
+class CollectionForm(ModelForm):
     class Meta:
         model = Collection
         fields = ['name','books']
