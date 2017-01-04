@@ -7,6 +7,16 @@ class BookForm(ModelForm):
         model = Book
         fields = ['name','author','collection']
 
+class TakeBook(ModelForm):
+    class Meta:
+        model = Book
+        fields = ['taker']
+
+class AddToCollection(ModelForm):
+    class Meta:
+        model = Book
+        fields = ['collection']
+
 class CollectionForm(ModelForm):
     class Meta:
         model = Collection

@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 
 from applications.books.models import Book, Collection
-from applications.books.form import BookForm, CollectionForm
+from applications.books.form import BookForm, CollectionForm, TakeBook
 
 def index(request):
     context = {}
@@ -40,14 +40,22 @@ def new_collection(request):
         return render(request,'bookCreate.html',context)
 
 def mark_as_taken(request,bookid):
-    tkn = Book.objcects.get(id=bookid)
-    if (tkn.taken == False):
-        tkn.taker = request.taker
-        tkn.taken = True
-        tkn.save()
-        return HttpResponse("Prestado Correctamente")
+    book = Book.objects.get(id=bookid)
+    if (request.method == 'POST') and (book.taken == False):
+        book.taker = TakeBook(request.POST)
+        if book.taker.is_valid():
+            book.save()
+            book = Book.objects.get(id=bookid)
+            context = {'book': book}
+            return render(request,'book.html',context)
+        else:
+            return HttpResponse('Datos incorrectos')
+    elif (request.method == 'GET') and (book.taken == False):
+        book = TakeBook(request.GET)
+        context = {'form': book}
+        return render(request,'bookTake.html',context)
     else:
-        return HttpResponse("Este libro se encuentra prestado")
+        return HttpResponse ('Este libro se encuentra prestado')
 
 def untake(request,bookid):
     untk = Book.objects.get(id=bookid)

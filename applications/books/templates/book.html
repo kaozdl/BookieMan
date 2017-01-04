@@ -4,4 +4,14 @@
     <ul>Autor : {{author}}</ul>
     <ul>Estado : {{state}}</ul>
     <ul>Colección : {{collection}}</ul>
+    {% if state == 'prestado' %}
+    <ul>Prestado a :</ul>
+    {% endif %}
+
+</list>
+
+<p>----------------------------------------------</p>
+<list>
+    <a href="{%url 'books' %}">Volver a la lista</a>
+    <a href="{% url 'index'%}">Volver al menú</a>
 </list>

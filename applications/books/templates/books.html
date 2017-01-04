@@ -2,8 +2,8 @@
 <h1>Tus libros</h1>
 <list>
 {% for book in books %}
-    <ul>{{book.name}} {{book.state}}</ul>
-        <a href=>Prestar libro</a>
+    <ul><a href="{%url 'book' book.id %}">{{book.name}} {{book.state}}</a></ul>
+         <a href="{%url 'booktk' book.id%}">Prestar libro</a>
          <a href="{%url 'bookuntk' book.id%}">Devolver libro</a>
          <a href="{%url 'bookdlt' book.id%}">Borrar libro</a> <br>
 {% endfor %}
