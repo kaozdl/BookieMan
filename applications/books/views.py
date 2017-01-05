@@ -37,19 +37,17 @@ def new_collection(request):
     else:
         book = CollectionForm()
         context = {'form': book}
-        return render(request,'bookCreate.html',context)
+        return render(request,'collectionCreate.html',context)
 
 def mark_as_taken(request,bookid):
+    # import ipdb; ipdb.set_trace()
     book = Book.objects.get(id=bookid)
     if (request.method == 'POST') and (book.taken == False):
-        book.taker = TakeBook(request.POST)
-        if book.taker.is_valid():
-            book.save()
-            book = Book.objects.get(id=bookid)
-            context = {'book': book}
-            return render(request,'book.html',context)
-        else:
-            return HttpResponse('Datos incorrectos')
+        book.taker = request.POST['taker']
+        book.taken = True
+        book.save()
+        context = {'book': book}
+        return render(request,'book.html',context)
     elif (request.method == 'GET') and (book.taken == False):
         book = TakeBook(request.GET)
         context = {'form': book}
@@ -61,6 +59,7 @@ def untake(request,bookid):
     untk = Book.objects.get(id=bookid)
     if (untk.taken == True):
         untk.taker = ""
+        untk.taken = False
         untk.save()
         return HttpResponse("Devuelto Correctamente")
     else:
@@ -76,6 +75,7 @@ def list_book(request,bookid):
     book = Book.objects.get(id=bookid)
     name = book.name
     author = book.author
+    taker = book.taker
     if (book.taken == True):
         state = 'Prestado'
     else:
@@ -84,7 +84,7 @@ def list_book(request,bookid):
         collection = book.collection.name
     else:
         collection = ""
-    context = {'name': name, 'author' : author, 'state': state, 'collection' : collection}
+    context = {'name': name, 'author' : author, 'state':state, 'taker': taker, 'collection' : collection}
     return render(request,'book.html',context)
 
 def delete_book(request,bookid):

@@ -25,7 +25,7 @@ SECRET_KEY = 'j2@i&+@%g#w!x*&+9qma=@r3_t+7-x*r(jwuvjx7jdc(zy=#7-'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1','kaozlab.sytes.net','192.168.0.107']
 
 
 # Application definition

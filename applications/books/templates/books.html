@@ -2,7 +2,11 @@
 <h1>Tus libros</h1>
 <list>
 {% for book in books %}
-    <ul><a href="{%url 'book' book.id %}">{{book.name}} {{book.state}}</a></ul>
+    <ul><a href="{%url 'book' book.id %}">{{book.name}}</a>
+        {% if book.taken == True %}
+        <span>Prestado</span>
+        {% endif %}
+    </ul>
          <a href="{%url 'booktk' book.id%}">Prestar libro</a>
          <a href="{%url 'bookuntk' book.id%}">Devolver libro</a>
          <a href="{%url 'bookdlt' book.id%}">Borrar libro</a> <br>
@@ -12,7 +16,6 @@
 <p>----------------------------------------------------------</p>
 <br>
 <list>
-    <a>Editar libro</a>
     <a href="{%url 'books' %}">Volver a la lista</a>
     <a href="{% url 'index'%}">Volver al menú</a>
 </list>
