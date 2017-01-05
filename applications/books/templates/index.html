@@ -1,7 +1,9 @@
-
-<h2>Bookieman</h2><br>
-<br>
-<br>
+{% extends "admin.html" %}
+{% block title %}
+<h2><span>Bookieman </span><span class="glyphicon glyphicon-book"></span></h2>
+{% endblock title %}
+{% block content %}
+</div class="navbar-left">
 <list>
 <ul><a href="{%url 'books' %}">Ver libros </a><br></ul>
 <ul><a href="{%url 'collections' %}">Ver colecciones</a><br></ul>
@@ -14,5 +16,4 @@
 <br>
 <br>
 <br>
-<a href="http://www.github.com/kaozdl/bookieman/issues" target=blank>Bugs</a>
-<a href="http://www.github.com/kaozdl" target=blank>Otros proyectos</a>
+{% endblock content %}

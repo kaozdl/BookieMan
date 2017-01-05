@@ -1,7 +1,9 @@
-{% load staticfiles %}
-<h2>{{name}}</h2>
+{% extends "admin.html" %}
+{% block title %}<h2>{{name}}</h2>{% endblock title %}
+{% block content %}
 <list>
 {% for book in collection %}
     <ul>{{book}}</ul><br>
 {% endfor %}
 </list>
+{% endblock content %}

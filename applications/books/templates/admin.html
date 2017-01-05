@@ -1,0 +1,17 @@
+<head>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+</style>
+</head>
+<body>
+<div id="title" class="jumbotron text-center">
+    {% block title %}{% endblock title %}
+</div>
+<div id="content">
+    {% block content %}{% endblock content %}
+</div>
+<div id="footer" style="text-align:center; background-color">
+    {% include "footer.html" %}
+</div>
+</body>
+<script type="text/javascript" src="{{ STATIC_URL }}/thrid-parties/jquery.js">

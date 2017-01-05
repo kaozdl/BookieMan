@@ -1,5 +1,6 @@
-{% load staticfiles %}
-<h2>Mis Colecciones</h2>
+{% extends "admin.html" %}
+{% block title %}<h2>Mis Colecciones</h2>{% endblock title %}
+{% block content %}
 <list>
 {% for collection in collections %}
     <ul>{{collection.name}}
@@ -8,3 +9,4 @@
 </list>
 <br>
 <a href="{% url 'index' %}">Menú principal</a>
+{% endblock content %}

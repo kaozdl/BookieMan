@@ -1,15 +1,21 @@
-{% load staticfiles %}
+{% extends "admin.html" %}
+{% load static %}
+{% block title %}
 <h1>Tus libros</h1>
+{% endblock title %}
+{% block content %}
 <list>
 {% for book in books %}
+<div style="background-color : #99a8c1">
     <ul><a href="{%url 'book' book.id %}">{{book.name}}</a>
+    <button type="button" class="btn btn-primary">Prestar Libro<a href="{%url 'booktk' book.id%}"></a></button>
+    <button type="button" class="btn btn-primary">Devolver Libro<a href="{%url 'bookuntk' book.id%}"></a></button>
+    <button type="button" class="btn btn-danger">Borrar Libro<a href="{%url 'bookdlt' book.id%}"></a></button>
         {% if book.taken == True %}
         <span>Prestado</span>
         {% endif %}
     </ul>
-         <a href="{%url 'booktk' book.id%}">Prestar libro</a>
-         <a href="{%url 'bookuntk' book.id%}">Devolver libro</a>
-         <a href="{%url 'bookdlt' book.id%}">Borrar libro</a> <br>
+</div>
 {% endfor %}
 </list>
 <br>
@@ -19,3 +25,4 @@
     <a href="{%url 'books' %}">Volver a la lista</a>
     <a href="{% url 'index'%}">Volver al menú</a>
 </list>
+{% endblock content %}
