@@ -12,10 +12,10 @@ class TakeBook(ModelForm):
         model = Book
         fields = ['taker']
 
-class AddToCollection(ModelForm):
+class EditBook(ModelForm):
     class Meta:
         model = Book
-        fields = ['collection']
+        fields = ['name','author','collection']
 
 class CollectionForm(ModelForm):
     class Meta:

@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 
 from applications.books.models import Book, Collection
-from applications.books.form import BookForm, CollectionForm, TakeBook
+from applications.books.form import BookForm, CollectionForm, TakeBook, EditBook
 
 def index(request):
     context = {}
@@ -23,6 +23,23 @@ def new_book(request):
         book = BookForm()
         context = {'form': book}
         return render(request,'bookCreate.html',context)
+
+def edit_book(request,bookid):
+    if request.method == 'POST':
+        book = Book.objects.get(id=bookid)
+        book.name = request.POST['name']
+        book.author = request.POST['author']
+        if request.POST['collection'] == '':
+            book.collection = None
+        else:
+            book.collection = Collection.objects.get(id=int(request.POST['collection']))
+        book.save()
+        return list_book(request,bookid)
+    else:
+        pbook = Book.objects.get(id=bookid)
+        book = EditBook(initial={'name':pbook.name, 'collection':pbook.collection, 'author':pbook.author,})
+        context = {'form' : book ,'pbook':pbook}
+        return render(request,'bookEdit.html',context)
 
 def new_collection(request):
     if request.method == 'POST':
@@ -46,14 +63,13 @@ def mark_as_taken(request,bookid):
         book.taker = request.POST['taker']
         book.taken = True
         book.save()
-        context = {'book': book}
-        return render(request,'book.html',context)
+        return list_book(request,bookid)
     elif (request.method == 'GET') and (book.taken == False):
         book = TakeBook(request.GET)
         context = {'form': book}
         return render(request,'bookTake.html',context)
     else:
-        return HttpResponse ('Este libro se encuentra prestado')
+        return list_books(request,message='Este libro se encuentra prestado')
 
 def untake(request,bookid):
     untk = Book.objects.get(id=bookid)
@@ -61,13 +77,16 @@ def untake(request,bookid):
         untk.taker = ""
         untk.taken = False
         untk.save()
-        return HttpResponse("Devuelto Correctamente")
+        return list_books(request,message="Devuelto Correctamente")
     else:
-        return HttpResponse("Este libro no se encuentra prestado")
+        return list_books(request,message="Este libro no se encuentra prestado")
 
-def list_books(request):
+def list_books(request,*args,**kwargs):
     books = Book.objects.all()
-    context = {'books':books}
+    if kwargs.get('message') != None:
+        context = {'books': books , 'message':kwargs.get('message')}
+    else:
+        context = {'books':books}
     return render(request,'books.html',context)
 
 def list_book(request,bookid):
@@ -90,7 +109,7 @@ def list_book(request,bookid):
 def delete_book(request,bookid):
     book = Book.objects.get(id=bookid)
     book.delete()
-    return HttpResponse("Borrado exitosamente")
+    return list_books(request,message='Borrado Exitosamente')
 
 def list_collections(request):
     collections = Collection.objects.all()
@@ -103,14 +122,3 @@ def list_collection(request,collection):
     count = collection.count()
     context = {'collection': collection, 'name': name, 'count': count}
     return render(request,'collection.html',context)
-
-def addToCollection(request):
-    # bookToAdd = Averiguar como se consiguen los objetos
-    if bookToAdd.collection != None:
-        return HttpResponse ("Este libro se encuentra en: "+bookToAdd.collection)
-    elif (Collection.objects.filter(id=collection_id).count() > 0):
-        bookToAdd.collection = collection_id
-        bookToAdd.save()
-        return HttpResponse("Operacion Exitosa")
-    else:
-        return HttpResponse(u"La colección no existe")

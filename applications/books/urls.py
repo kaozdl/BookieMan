@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^deletebook/([0-9]+)$', views.delete_book, name='bookdlt'),
     url(r'^untakebook/([0-9]+)$', views.untake, name='bookuntk'),
     url(r'^takebook/([0-9]+)$', views.mark_as_taken, name='booktk'),
+    url(r'^editbook/([0-9]+)$', views.edit_book, name='editbook'),
     url(r'^booknew/$', views.new_book, name='newbook'),
-    url(r'^collectionnew/$', views.new_collection, name='newcollection')
+    url(r'^collectionnew/$', views.new_collection, name='newcollection'),
 ]
