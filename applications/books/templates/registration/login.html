@@ -1,0 +1,14 @@
+{% extends "admin.html" %}
+
+{% block title %}
+<h2>Iniciar Sesión</h2>
+{% endblock title %}
+
+{% block content %}
+<h2>Login</h2>
+ <form method="post">
+   {% csrf_token %}
+   {{ form.as_p }}
+   <button type="submit">Login</button>
+ </form>
+{% endblock content %}

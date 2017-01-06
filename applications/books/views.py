@@ -1,18 +1,29 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 
 from applications.books.models import Book, Collection
 from applications.books.form import BookForm, CollectionForm, TakeBook, EditBook
 
+@login_required(login_url='login')
 def index(request):
     context = {}
     return render(request,'index.html',context)
 
+@login_required(login_url='login')
 def new_book(request):
     if request.method == 'POST':
         newbook = BookForm(request.POST)
         if newbook.is_valid():
+            newbook = Book()
+            newbook.name = request.POST['name']
+            newbook.author = request.POST['author']
+            if request.POST['collection'] == '':
+                newbook.collection = None
+            else:
+                newbook.collection = Collection.objects.get(id=int(request.POST['collection']))
+            newbook.user = request.user
             newbook.save()
             book = BookForm()
             context = {'form': book}
@@ -24,6 +35,7 @@ def new_book(request):
         context = {'form': book}
         return render(request,'bookCreate.html',context)
 
+@login_required(login_url='login')
 def edit_book(request,bookid):
     if request.method == 'POST':
         book = Book.objects.get(id=bookid)
@@ -41,10 +53,15 @@ def edit_book(request,bookid):
         context = {'form' : book ,'pbook':pbook}
         return render(request,'bookEdit.html',context)
 
+@login_required(login_url='login')
 def new_collection(request):
     if request.method == 'POST':
         newcollection = CollectionForm(request.POST)
         if newcollection.is_valid():
+            newcollection = Collection
+            newcollection.user = request.user
+            newcollection.name = request.POST['name']
+            newcollection.books = request.POST['books']
             newcollection.save()
             collection = CollectionForm()
             context = {'form': collection}
@@ -56,6 +73,7 @@ def new_collection(request):
         context = {'form': book}
         return render(request,'collectionCreate.html',context)
 
+@login_required(login_url='login')
 def mark_as_taken(request,bookid):
     # import ipdb; ipdb.set_trace()
     book = Book.objects.get(id=bookid)
@@ -71,6 +89,7 @@ def mark_as_taken(request,bookid):
     else:
         return list_books(request,message='Este libro se encuentra prestado')
 
+@login_required(login_url='login')
 def untake(request,bookid):
     untk = Book.objects.get(id=bookid)
     if (untk.taken == True):
@@ -81,14 +100,16 @@ def untake(request,bookid):
     else:
         return list_books(request,message="Este libro no se encuentra prestado")
 
+@login_required(login_url='login')
 def list_books(request,*args,**kwargs):
-    books = Book.objects.all()
+    books = Book.objects.filter(user=request.user)
     if kwargs.get('message') != None:
         context = {'books': books , 'message':kwargs.get('message')}
     else:
         context = {'books':books}
     return render(request,'books.html',context)
 
+@login_required(login_url='login')
 def list_book(request,bookid):
     # import ipdb; ipdb.set_trace()
     book = Book.objects.get(id=bookid)
@@ -106,16 +127,19 @@ def list_book(request,bookid):
     context = {'name': name, 'author' : author, 'state':state, 'taker': taker, 'collection' : collection}
     return render(request,'book.html',context)
 
+@login_required(login_url='login')
 def delete_book(request,bookid):
     book = Book.objects.get(id=bookid)
     book.delete()
     return list_books(request,message='Borrado Exitosamente')
 
+@login_required(login_url='login')
 def list_collections(request):
-    collections = Collection.objects.all()
+    collections = Collection.objects.filter(user=request.user)
     context = {'collections': collections}
     return render(request,'collections.html',context)
 
+@login_required(login_url='login')
 def list_collection(request,collection):
     collection = Book.objects.filter(collection=collection)
     name = Collection.objects.get(collection=collection).name
