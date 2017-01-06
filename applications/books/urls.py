@@ -21,4 +21,5 @@ urlpatterns = [
     url(r'^editbook/([0-9]+)$', views.edit_book, name='editbook'),
     url(r'^booknew/$', views.new_book, name='newbook'),
     url(r'^collectionnew/$', views.new_collection, name='newcollection'),
+    url(r'^collectionedit/([0-9]+)$', views.list_collection, name='collectionEdit')
 ]

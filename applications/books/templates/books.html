@@ -16,14 +16,10 @@
     <a href="{%url 'editbook' book.id%}"><button type="button" class="btn btn-warning">Editar Libro</button></a>
     <a href="{%url 'bookdlt' book.id%}"><button type="button" class="btn btn-danger">Borrar Libro</button></a>
         {% if book.taken == True %}
-        <span>Prestado</span>
+        <span>Prestado el :</span><span>{{book.last_take}}</span>
         {% endif %}
     </ul>
 </div>
 {% endfor %}
 </list>
-<div style="text-align : center">
-    <a href="{%url 'books' %}"><button type="button" class="btn btn-primary">Volver a la lista</button></a>
-    <a href="{%url 'index' %}"><button type="button" class="btn btn-primary">Volver al menú</a></button></a>
-</div>
 {% endblock content %}

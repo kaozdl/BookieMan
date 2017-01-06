@@ -1,7 +1,11 @@
 
 {% block footer %}
+<div style="text-align : center">
+    <a href="{%url 'books' %}"><button type="button" class="btn btn-primary">Volver a la lista</button></a>
+    <a href="{%url 'index' %}"><button type="button" class="btn btn-primary">Volver al menú</button></a>
+</div>
+<p>_________________________________________________________________________________________________________________</p>
 <a href="http://www.github.com/kaozdl/bookieman/issues" target=blank>Bugs</a>
 <a href="http://www.github.com/kaozdl" target=blank>Otros proyectos</a><br>
 <a href="{%url 'logout' %}"><button type="button" class="btn btn-danger pullcenter">Cerrar Sesion</button></a>
-
 {% endblock footer %}

@@ -2,6 +2,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
+import datetime
 
 from applications.books.models import Book, Collection
 from applications.books.form import BookForm, CollectionForm, TakeBook, EditBook
@@ -41,6 +42,7 @@ def edit_book(request,bookid):
         book = Book.objects.get(id=bookid)
         book.name = request.POST['name']
         book.author = request.POST['author']
+        book.place_in_collection = int(request.POST['place_in_collection'])
         if request.POST['collection'] == '':
             book.collection = None
         else:
@@ -79,6 +81,7 @@ def mark_as_taken(request,bookid):
     book = Book.objects.get(id=bookid)
     if (request.method == 'POST') and (book.taken == False):
         book.taker = request.POST['taker']
+        book.last_take = datetime.datetime.now().date()
         book.taken = True
         book.save()
         return list_book(request,bookid)
@@ -141,8 +144,28 @@ def list_collections(request):
 
 @login_required(login_url='login')
 def list_collection(request,collection):
-    collection = Book.objects.filter(collection=collection)
-    name = Collection.objects.get(collection=collection).name
-    count = collection.count()
-    context = {'collection': collection, 'name': name, 'count': count}
+    collection_send = Book.objects.filter(collection=Collection.objects.get(id=collection))
+    name = Collection.objects.get(id=collection).name
+    count = collection_send.count()
+    context = {'collection': collection_send, 'name': name, 'count': count}
     return render(request,'collection.html',context)
+
+@login_required(login_url='login')
+def edit_collection(request,collectionid):
+    if request.method == 'POST':
+        newcollection = CollectionForm(request.POST,request)
+        if newcollection.is_valid():
+            newcollection = Collection.objects.get(id=collectionid)
+            newcollection.user = request.user
+            newcollection.name = request.POST['name']
+            newcollection.books = request.POST['books']
+            newcollection.save()
+            collection = CollectionForm()
+            context = {'form': collection}
+            return render(request,'collectionCreate.html',context)
+        else:
+            return HttpResponse('Datos incorrectos')
+    else:
+        book = CollectionForm()
+        context = {'form': book}
+        return render(request,'collectionCreate.html',context)

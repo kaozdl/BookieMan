@@ -3,10 +3,8 @@
 {% block content %}
 <list>
 {% for collection in collections %}
-    <ul>{{collection.name}}
-        <br>Libros {{collection.count_books}} : {{collection.books}} </ul><br>
+    <ul><a href="{%url 'collection' collection.id%}"><button type=button class="btn btn-default">{{collection.name}}</button></a>
+        <br>Libros {{collection.count_books}} : {{collection.books}}
+        <a href="{% url 'collectionEdit' collection.id %}"><button type="button" class="btn btn-warning">Editar</button></a></ul><br>
 {% endfor %}
-</list>
-<br>
-<a href="{% url 'index' %}">Menú principal</a>
 {% endblock content %}
