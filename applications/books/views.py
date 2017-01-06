@@ -14,7 +14,7 @@ def index(request):
 @login_required(login_url='login')
 def new_book(request):
     if request.method == 'POST':
-        newbook = BookForm(request.POST)
+        newbook = BookForm(request,request.POST)
         if newbook.is_valid():
             newbook = Book()
             newbook.name = request.POST['name']
@@ -25,13 +25,13 @@ def new_book(request):
                 newbook.collection = Collection.objects.get(id=int(request.POST['collection']))
             newbook.user = request.user
             newbook.save()
-            book = BookForm()
+            book = BookForm(request)
             context = {'form': book}
             return render(request,'bookCreate.html',context)
         else:
             return HttpResponse('Datos incorrectos')
     else:
-        book = BookForm()
+        book = BookForm(request)
         context = {'form': book}
         return render(request,'bookCreate.html',context)
 
@@ -49,14 +49,14 @@ def edit_book(request,bookid):
         return list_book(request,bookid)
     else:
         pbook = Book.objects.get(id=bookid)
-        book = EditBook(initial={'name':pbook.name, 'collection':pbook.collection, 'author':pbook.author,})
+        book = EditBook(request,initial={'name':pbook.name, 'collection':pbook.collection, 'author':pbook.author,})
         context = {'form' : book ,'pbook':pbook}
         return render(request,'bookEdit.html',context)
 
 @login_required(login_url='login')
 def new_collection(request):
     if request.method == 'POST':
-        newcollection = CollectionForm(request.POST)
+        newcollection = CollectionForm(request.POST,request)
         if newcollection.is_valid():
             newcollection = Collection
             newcollection.user = request.user
