@@ -160,9 +160,9 @@ def edit_collection(request,collectionid):
             newcollection.name = request.POST['name']
             newcollection.books = request.POST['books']
             newcollection.save()
-            collection = CollectionForm()
-            context = {'form': collection}
-            return render(request,'collectionEdit.html',context)
+            collection = Collection.objects.filter(user=request.user)
+            context = {'collections': collection}
+            return render(request,'collections.html',context)
         else:
             return HttpResponse('Datos incorrectos')
     else:
