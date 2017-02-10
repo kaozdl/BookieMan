@@ -25,18 +25,21 @@ SECRET_KEY = 'j2@i&+@%g#w!x*&+9qma=@r3_t+7-x*r(jwuvjx7jdc(zy=#7-'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','kaozlab.sytes.net','192.168.0.107']
+ALLOWED_HOSTS = ['127.0.0.1','kaozlab.sytes.net','192.168.0.152']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+# Django
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+# Thrid Parties
+# Mine
     'applications.books'
 ]
 
@@ -48,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+# Thrid Parties
 ]
 
 ROOT_URLCONF = 'BookieMan.urls'
@@ -100,13 +104,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+LOGIN_REDIRECT_URL = 'index'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-uy'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Montevideo'
 
 USE_I18N = True
 

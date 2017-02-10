@@ -162,10 +162,11 @@ def edit_collection(request,collectionid):
             newcollection.save()
             collection = CollectionForm()
             context = {'form': collection}
-            return render(request,'collectionCreate.html',context)
+            return render(request,'collectionEdit.html',context)
         else:
             return HttpResponse('Datos incorrectos')
     else:
-        book = CollectionForm()
+        Toedit = Collection.objects.get(id=collectionid)
+        book = CollectionForm(request,initial={'name':Toedit.name, 'books': Toedit.books})
         context = {'form': book}
-        return render(request,'collectionCreate.html',context)
+        return render(request,'collectionEdit.html',context)
