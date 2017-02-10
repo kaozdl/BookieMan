@@ -45,3 +45,12 @@ class CollectionForm(ModelForm):
     class Meta:
         model = Collection
         fields = ['name','books']
+
+class EditCollectionForm(ModelForm):
+    def __init__(self,*args,**kwargs):
+        super(EditCollectionForm, self).__init__(*args, **kwargs)
+        self.fields['name'].label = 'Nombre'
+        self.fields['books'].label = 'Cantidad de libros'
+    class Meta:
+        model = Collection
+        fields = ['name','books']

@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 import datetime
 
 from applications.books.models import Book, Collection
-from applications.books.form import BookForm, CollectionForm, TakeBook, EditBook
+from applications.books.form import BookForm, CollectionForm, EditCollectionForm, TakeBook, EditBook
 
 @login_required(login_url='login')
 def index(request):
@@ -153,7 +153,7 @@ def list_collection(request,collection):
 @login_required(login_url='login')
 def edit_collection(request,collectionid):
     if request.method == 'POST':
-        newcollection = CollectionForm(request.POST,request)
+        newcollection = EditCollectionForm(request.POST)
         if newcollection.is_valid():
             newcollection = Collection.objects.get(id=collectionid)
             newcollection.user = request.user
@@ -167,6 +167,6 @@ def edit_collection(request,collectionid):
             return HttpResponse('Datos incorrectos')
     else:
         Toedit = Collection.objects.get(id=collectionid)
-        book = CollectionForm(request,initial={'name':Toedit.name, 'books': Toedit.books})
+        book = EditCollectionForm(initial={'name':Toedit.name, 'books': Toedit.books})
         context = {'form': book}
         return render(request,'collectionEdit.html',context)
