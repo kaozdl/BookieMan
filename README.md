@@ -7,3 +7,9 @@ Requisitos:
 Django 1.10
 
 -------------------------------------------
+
+TODO:
+-----
+
+* Quitar js del menu de admin.html y colocarlo en static/../menu.js
+* Colocar links correctos en menu.
